@@ -5,7 +5,9 @@ export const config = {runtime: "edge"};
 
 export default async ({url}) => {
     try {
-        const {file_path, file_name, mime_type} = await Utils.getFile(bot, url);
+        const file = await Utils.getFile(bot, url);
+        console.debug(file);
+        const {file_path, file_name, mime_type} = file;
         if (!file_path) return Utils.status();
         const headers = Utils.getHeaders(file_name, mime_type, "inline");
         const {body, status, statusText} = await fetch(Utils.getFileURL(file_path));

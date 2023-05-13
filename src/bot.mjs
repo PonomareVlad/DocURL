@@ -12,6 +12,7 @@ bot.on(":file", async ctx => {
     const {
         message_id: reply_to_message_id
     } = ctx.msg;
+    console.debug(ctx);
     const file = Utils.parseFile(ctx.msg);
     const viewURL = Utils.apiURL(file, "view");
     const downloadURL = Utils.apiURL(file, "download");
