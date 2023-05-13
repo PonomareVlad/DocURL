@@ -9,8 +9,12 @@
     "tunnel": "cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
+    "@grammyjs/parse-mode": "^1.7.1",
     "edge-grammy": "0.0.7",
-    "grammy": "^1.16.0"
+    "grammy": "npm:@ponomarevlad/grammy@1.15.3-web.2"
+  },
+  "overrides": {
+    "grammy": "npm:@ponomarevlad/grammy@1.15.3-web.2"
   },
   "engines": {
     "node": "^18.0.0"

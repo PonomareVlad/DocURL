@@ -1,33 +1,23 @@
-import {Bot} from "grammy/web";
+import Utils from "./utils.mjs";
+import {Bot, InlineKeyboard} from "grammy/web";
+import {fmt, hydrateReply, link} from "@grammyjs/parse-mode";
 
-const {
-    VERCEL_URL,
-    TELEGRAM_BOT_TOKEN,
-    API_URL = VERCEL_URL
-} = process.env;
+const {TELEGRAM_BOT_TOKEN} = process.env;
 
 export const bot = new Bot(TELEGRAM_BOT_TOKEN);
 
-const parseFile = m => m.photo !== undefined
-    ? m.photo[m.photo.length - 1]
-    : m.animation ??
-    m.audio ??
-    m.document ??
-    m.video ??
-    m.video_note ??
-    m.voice ??
-    m.sticker;
-
-const setURLParams = (url = new URL(`http://localhost`), params = {}) => {
-    Object.entries(params).filter(([_, value]) => value).forEach(param => url.searchParams.set(...param));
-    return url;
-}
+bot.use(hydrateReply);
 
 bot.on(":file", async ctx => {
-    const {file_id, mime_type, file_name} = parseFile(ctx.msg);
-    const url = new URL(`https://${API_URL}/api/download`);
-    setURLParams(url, {file_id, mime_type, file_name});
-    return ctx.reply(url);
+    const {
+        message_id: reply_to_message_id
+    } = ctx.msg;
+    const file = Utils.parseFile(ctx.msg);
+    const viewURL = Utils.apiURL(file, "view");
+    const downloadURL = Utils.apiURL(file, "download");
+    const reply_markup = new InlineKeyboard().url("View", viewURL).url("Download", downloadURL);
+    const text = fmt`${link("View", viewURL)} and ${link("Download", downloadURL)} links for this file`;
+    return ctx.replyFmt(text, {reply_to_message_id, reply_markup});
 });
 
 bot.on("msg", async ctx => ctx.reply(`Send me any file`));
