@@ -29,6 +29,6 @@ bot.on(":file", async ctx => {
     return ctx.reply(url);
 });
 
-bot.on("message:text", async ctx => ctx.reply(ctx.msg.text));
+bot.on("msg", async ctx => ctx.reply(`Send me any file`));
 
 export default bot;
