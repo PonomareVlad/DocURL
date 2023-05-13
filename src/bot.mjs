@@ -2,7 +2,8 @@ import {Bot} from "grammy/web";
 
 const {
     VERCEL_URL,
-    TELEGRAM_BOT_TOKEN
+    TELEGRAM_BOT_TOKEN,
+    API_URL = VERCEL_URL
 } = process.env;
 
 export const bot = new Bot(TELEGRAM_BOT_TOKEN);
@@ -24,7 +25,7 @@ const setURLParams = (url = new URL(`http://localhost`), params = {}) => {
 
 bot.on(":file", async ctx => {
     const {file_id, mime_type, file_name} = parseFile(ctx.msg);
-    const url = new URL(`https://${VERCEL_URL}/api/download`);
+    const url = new URL(`https://${API_URL}/api/download`);
     setURLParams(url, {file_id, mime_type, file_name});
     return ctx.reply(url);
 });
