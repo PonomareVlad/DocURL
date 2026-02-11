@@ -15,8 +15,5 @@
   },
   "overrides": {
     "grammy": "npm:@ponomarevlad/grammy@1.15.3-web.2"
-  },
-  "engines": {
-    "node": "^18.0.0"
   }
 }
